@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>고등학교 2학년 기하 [Ⅰ. 이차곡선] Q&A 통합 관리 대시보드</title>
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap');
+
+        :root {
+            --bg-color: #070c18;
+            --card-bg: rgba(18, 27, 46, 0.85);
+            --card-hover: rgba(28, 44, 76, 0.95);
+            --accent-blue: #38bdf8;
+            --accent-emerald: #34d399;
+            --accent-purple: #c084fc;
+            --accent-amber: #fbbf24;
+            --accent-rose: #f43f5e;
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: radial-gradient(circle at 15% 20%, rgba(56, 189, 248, 0.1) 0%, transparent 45%),
+                              radial-gradient(circle at 85% 80%, rgba(192, 132, 252, 0.1) 0%, transparent 45%);
+            padding: 30px 24px;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .header-title-box {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffffff 40%, var(--accent-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            background: var(--card-bg);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 9px 16px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-action:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .btn-teacher-toggle {
+            background: rgba(244, 63, 94, 0.15);
+            border-color: rgba(244, 63, 94, 0.4);
+            color: var(--accent-rose);
+        }
+
+        .btn-teacher-toggle.active {
+            background: var(--accent-rose);
+            color: white;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-sub);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 900;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Filter Controls */
+        .filter-bar {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+            color: var(--text-sub);
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active {
+            background: var(--accent-blue);
+            color: #041226;
+            border-color: var(--accent-blue);
+        }
+
+        .search-input {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 8px 14px;
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 0.95rem;
+            min-width: 220px;
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-purple);
+        }
+
+        /* Q&A Items List */
+        .qna-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .qna-item-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            transition: all 0.2s;
+        }
+
+        .qna-item-card:hover {
+            border-color: rgba(56, 189, 248, 0.4);
+        }
+
+        .qna-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .qna-student-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--accent-blue);
+        }
+
+        .qna-tags {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tag-lesson {
+            background: rgba(192, 132, 252, 0.15);
+            color: var(--accent-purple);
+            border: 1px solid var(--accent-purple);
+            font-size: 0.82rem;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .tag-slide {
+            background: rgba(56, 189, 248, 0.12);
+            color: var(--accent-blue);
+            font-size: 0.82rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .tag-status-done {
+            background: rgba(52, 211, 153, 0.15);
+            color: var(--accent-emerald);
+            font-size: 0.82rem;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .tag-status-pending {
+            background: rgba(251, 191, 36, 0.15);
+            color: var(--accent-amber);
+            font-size: 0.82rem;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .qna-question-body {
+            font-size: 1.15rem;
+            line-height: 1.7;
+            color: var(--text-main);
+            background: rgba(0, 0, 0, 0.2);
+            padding: 14px 18px;
+            border-radius: 10px;
+            border-left: 4px solid var(--accent-blue);
+        }
+
+        .qna-answer-body {
+            background: rgba(52, 211, 153, 0.08);
+            border-left: 4px solid var(--accent-emerald);
+            border-radius: 10px;
+            padding: 16px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .qna-answer-head {
+            font-weight: 800;
+            color: var(--accent-emerald);
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .teacher-answer-form {
+            background: rgba(244, 63, 94, 0.05);
+            border: 1px dashed rgba(244, 63, 94, 0.4);
+            border-radius: 10px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .textarea-answer {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px 14px;
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            min-height: 90px;
+            outline: none;
+        }
+
+        .textarea-answer:focus {
+            border-color: var(--accent-emerald);
+        }
+
+        .empty-box {
+            text-align: center;
+            padding: 80px 20px;
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            color: var(--text-sub);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: var(--text-sub);
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-title-box">
+                <a href="index.html" style="text-decoration:none; color:var(--accent-blue); font-weight:800; font-size:0.95rem;">← 수업 대시보드로 돌아가기</a>
+                <h1>💬 Ⅰ. 이차곡선 Q&A 통합 관리함</h1>
+                <p style="color:var(--text-sub); font-size:1.05rem;">학생들의 복습 질문을 확인하고 맞춤형 풀이 및 피드백을 답변하세요.</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn-action btn-teacher-toggle" id="btnTeacherToggle" onclick="toggleTeacherMode()">
+                    👨‍🏫 교사모드: <span id="teacherModeState">OFF</span>
+                </button>
+                <button class="btn-action" onclick="exportJSON()">📥 백업(JSON)</button>
+                <label class="btn-action" style="cursor:pointer;">
+                    📤 복원 <input type="file" accept=".json" style="display:none;" onchange="importJSON(event)">
+                </label>
+            </div>
+        </header>
+
+        <!-- Stats Grid -->
+        <section class="stats-grid">
+            <div class="stat-card" style="border-top: 4px solid var(--accent-blue);">
+                <div class="stat-label">전체 등록 질문</div>
+                <div class="stat-value" id="statTotal" style="color:var(--accent-blue);">0</div>
+            </div>
+            <div class="stat-card" style="border-top: 4px solid var(--accent-amber);">
+                <div class="stat-label">답변 대기 중</div>
+                <div class="stat-value" id="statPending" style="color:var(--accent-amber);">0</div>
+            </div>
+            <div class="stat-card" style="border-top: 4px solid var(--accent-emerald);">
+                <div class="stat-label">선생님 답변 완료</div>
+                <div class="stat-value" id="statAnswered" style="color:var(--accent-emerald);">0</div>
+            </div>
+            <div class="stat-card" style="border-top: 4px solid var(--accent-purple);">
+                <div class="stat-label">답변 완료율</div>
+                <div class="stat-value" id="statRate" style="color:var(--accent-purple);">0%</div>
+            </div>
+        </section>
+
+        <!-- Filter Bar -->
+        <section class="filter-bar">
+            <div class="filter-group">
+                <span style="font-weight:700; font-size:0.95rem; margin-right:4px;">상태 필터:</span>
+                <button class="filter-btn active" data-status="all" onclick="filterStatus('all')">전체 보기</button>
+                <button class="filter-btn" data-status="pending" onclick="filterStatus('pending')">⏳ 미답변만</button>
+                <button class="filter-btn" data-status="answered" onclick="filterStatus('answered')">✅ 답변완료만</button>
+            </div>
+            <div class="filter-group">
+                <span style="font-weight:700; font-size:0.95rem; margin-right:4px;">차시별:</span>
+                <select id="lessonSelect" class="search-input" style="min-width:140px;" onchange="renderDashboard()">
+                    <option value="all">전체 차시 (01~08)</option>
+                    <option value="01">01차시 (포물선 정의)</option>
+                    <option value="02">02차시 (포물선 평행이동)</option>
+                    <option value="03">03차시 (타원 정의)</option>
+                    <option value="04">04차시 (타원 평행이동)</option>
+                    <option value="05">05차시 (쌍곡선 정의)</option>
+                    <option value="06">06차시 (쌍곡선 총정리)</option>
+                    <option value="07">07차시 (포물선 접선)</option>
+                    <option value="08">08차시 (타원/쌍곡선 접선)</option>
+                </select>
+                <input type="text" id="searchInput" class="search-input" placeholder="학생 이름 / 내용 검색..." oninput="renderDashboard()">
+            </div>
+        </section>
+
+        <!-- Q&A Main List -->
+        <main class="qna-list" id="dashboardList"></main>
+
+        <footer>
+            <p>© 고등학교 기하 수업자료 • 학생 복습 및 실시간 질의응답 피드백 허브</p>
+        </footer>
+    </div>
+
+    <script>
+        const QNA_STORAGE_KEY = 'GEOMETRY_QNA_DATA_v1';
+        const TEACHER_PIN = '1234';
+        let isTeacher = localStorage.getItem('GEOMETRY_TEACHER_MODE') === 'true';
+        let currentStatusFilter = 'all';
+
+        function getQnaData() {
+            try {
+                return JSON.parse(localStorage.getItem(QNA_STORAGE_KEY)) || [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function saveQnaData(data) {
+            localStorage.setItem(QNA_STORAGE_KEY, JSON.stringify(data));
+            if (window.BroadcastChannel) {
+                new BroadcastChannel('geometry_qna_channel').postMessage({ type: 'UPDATE' });
+            }
+            renderDashboard();
+        }
+
+        function filterStatus(status) {
+            currentStatusFilter = status;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.status === status);
+            });
+            renderDashboard();
+        }
+
+        function toggleTeacherMode() {
+            if (isTeacher) {
+                isTeacher = false;
+                localStorage.setItem('GEOMETRY_TEACHER_MODE', 'false');
+                updateTeacherBtn();
+                renderDashboard();
+            } else {
+                const pin = prompt('👨‍🏫 교사 전용 인증 PIN 번호를 입력하세요 (기본값: 1234):');
+                if (pin === TEACHER_PIN) {
+                    isTeacher = true;
+                    localStorage.setItem('GEOMETRY_TEACHER_MODE', 'true');
+                    updateTeacherBtn();
+                    renderDashboard();
+                } else if (pin !== null) {
+                    alert('인증 PIN 번호가 일치하지 않습니다.');
+                }
+            }
+        }
+
+        function updateTeacherBtn() {
+            const btn = document.getElementById('btnTeacherToggle');
+            const state = document.getElementById('teacherModeState');
+            if (btn && state) {
+                btn.classList.toggle('active', isTeacher);
+                state.textContent = isTeacher ? 'ON' : 'OFF';
+            }
+        }
+
+        function renderDashboard() {
+            const allData = getQnaData();
+            const total = allData.length;
+            const answered = allData.filter(q => q.isAnswered).length;
+            const pending = total - answered;
+            const rate = total === 0 ? 0 : Math.round((answered / total) * 100);
+
+            document.getElementById('statTotal').textContent = total;
+            document.getElementById('statPending').textContent = pending;
+            document.getElementById('statAnswered').textContent = answered;
+            document.getElementById('statRate').textContent = `${rate}%`;
+
+            const lessonFilter = document.getElementById('lessonSelect').value;
+            const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
+
+            let filtered = allData.filter(item => {
+                if (currentStatusFilter === 'pending' && item.isAnswered) return false;
+                if (currentStatusFilter === 'answered' && !item.isAnswered) return false;
+                if (lessonFilter !== 'all' && item.lesson !== lessonFilter) return false;
+                if (keyword) {
+                    const matchName = (item.studentName || '').toLowerCase().includes(keyword);
+                    const matchQ = (item.question || '').toLowerCase().includes(keyword);
+                    const matchA = (item.answer || '').toLowerCase().includes(keyword);
+                    if (!matchName && !matchQ && !matchA) return false;
+                }
+                return true;
+            });
+
+            const listElem = document.getElementById('dashboardList');
+            if (filtered.length === 0) {
+                listElem.innerHTML = `
+                    <div class="empty-box">
+                        <div style="font-size:3.5rem; margin-bottom:14px;">📭</div>
+                        <h2 style="font-size:1.4rem; font-weight:800; color:var(--text-main); margin-bottom:8px;">조건에 맞는 질문이 없습니다.</h2>
+                        <p style="font-size:1.05rem;">학생들이 슬라이드에서 질문을 남기면 이곳에 실시간으로 집계됩니다.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            listElem.innerHTML = filtered.map(item => `
+                <div class="qna-item-card">
+                    <div class="qna-item-header">
+                        <div class="qna-student-info">
+                            <span>👤 ${item.studentName || '익명 학생'}</span>
+                            <span style="font-size:0.85rem; color:var(--text-sub); font-weight:normal;">• ${item.createdAt}</span>
+                        </div>
+                        <div class="qna-tags">
+                            <span class="tag-lesson">${item.lesson}차시</span>
+                            <a href="${item.lesson}차시-*.html" target="_blank" class="tag-slide" style="text-decoration:none;" title="해당 슬라이드로 이동">#${item.slideIndex + 1} 슬라이드: ${item.slideTitle || ''} ↗</a>
+                            ${item.isAnswered ? '<span class="tag-status-done">✅ 답변 완료</span>' : '<span class="tag-status-pending">⏳ 답변 대기</span>'}
+                            ${isTeacher ? `<button class="btn-action" style="padding:2px 8px; font-size:0.8rem; color:var(--accent-rose);" onclick="deleteItem('${item.id}')">🗑️ 삭제</button>` : ''}
+                        </div>
+                    </div>
+
+                    <div class="qna-question-body">
+                        <strong>Q.</strong> ${item.question}
+                    </div>
+
+                    ${item.isAnswered ? `
+                        <div class="qna-answer-body">
+                            <div class="qna-answer-head">
+                                <span>👨‍🏫 선생님 답변</span>
+                                <span style="font-size:0.8rem; color:var(--text-sub); font-weight:normal;">(${item.answeredAt})</span>
+                            </div>
+                            <div style="color:var(--text-main); line-height:1.7;">${item.answer}</div>
+                        </div>
+                    ` : ''}
+
+                    ${isTeacher ? `
+                        <div class="teacher-answer-form">
+                            <div style="font-size:0.95rem; font-weight:800; color:var(--accent-rose);">✍️ 교사 피드백 작성/수정 (KaTeX 수식 $...$ 지원):</div>
+                            <textarea class="textarea-answer" id="ans-${item.id}" placeholder="학생에게 친절한 풀이 과정과 설명을 입력하세요">${item.answer || ''}</textarea>
+                            <div style="display:flex; justify-content:flex-end;">
+                                <button class="btn-action" style="background:var(--accent-emerald); color:#064e3b; font-weight:800;" onclick="submitAnswer('${item.id}')">💾 답변 저장 및 학생 공개</button>
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+
+            if (window.renderMathInElement) {
+                renderMathInElement(listElem, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false}
+                    ],
+                    throwOnError: false
+                });
+            }
+        }
+
+        function submitAnswer(id) {
+            const input = document.getElementById(`ans-${id}`);
+            if (!input) return;
+            const ansText = input.value.trim();
+            if (!ansText) {
+                alert('답변 내용을 입력해주세요!');
+                return;
+            }
+
+            const now = new Date();
+            const timeStr = `${now.getMonth()+1}/${now.getDate()} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+            const allData = getQnaData();
+            const item = allData.find(q => q.id === id);
+            if (item) {
+                item.answer = ansText;
+                item.answeredAt = timeStr;
+                item.isAnswered = true;
+                saveQnaData(allData);
+                alert('답변이 등록되었습니다!');
+            }
+        }
+
+        function deleteItem(id) {
+            if (!confirm('이 질문을 삭제하시겠습니까?')) return;
+            let allData = getQnaData();
+            allData = allData.filter(q => q.id !== id);
+            saveQnaData(allData);
+        }
+
+        function exportJSON() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(getQnaData(), null, 2));
+            const a = document.createElement('a');
+            a.href = dataStr;
+            a.download = `기하_전체_QnA_데이터백업.json`;
+            a.click();
+        }
+
+        function importJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const r = new FileReader();
+            r.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (Array.isArray(data)) {
+                        saveQnaData(data);
+                        alert(`총 ${data.length}개의 Q&A 데이터가 복원되었습니다.`);
+                    }
+                } catch (err) {
+                    alert('올바른 JSON 파일이 아닙니다.');
+                }
+            };
+            r.readAsText(file);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            updateTeacherBtn();
+            renderDashboard();
+        });
+
+        if (window.BroadcastChannel) {
+            new BroadcastChannel('geometry_qna_channel').onmessage = () => {
+                renderDashboard();
+            };
+        }
+    </script>
+</body>
+</html>

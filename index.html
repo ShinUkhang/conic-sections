@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>고등학교 2학년 기하 [Ⅰ. 이차곡선] 스마트 전자칠판 수업자료 대시보드</title>
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap');
+
+        :root {
+            --bg-color: #070c18;
+            --card-bg: rgba(18, 27, 46, 0.78);
+            --card-hover: rgba(28, 44, 76, 0.95);
+            --accent-blue: #38bdf8;
+            --accent-emerald: #34d399;
+            --accent-purple: #c084fc;
+            --accent-amber: #fbbf24;
+            --accent-rose: #f43f5e;
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: radial-gradient(circle at 10% 15%, rgba(56, 189, 248, 0.1) 0%, transparent 45%),
+                              radial-gradient(circle at 90% 85%, rgba(192, 132, 252, 0.1) 0%, transparent 45%);
+            padding: 36px 24px;
+        }
+
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .top-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(192, 132, 252, 0.2));
+            color: var(--accent-blue);
+            font-weight: 800;
+            padding: 8px 24px;
+            border-radius: 9999px;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            font-size: 1rem;
+            margin-bottom: 14px;
+        }
+
+        h1 {
+            font-size: 2.9rem;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #ffffff 30%, var(--accent-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-sub);
+            max-width: 860px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .info-bar {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 22px;
+            flex-wrap: wrap;
+        }
+
+        .info-pill {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 8px 18px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            color: var(--text-sub);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-pill strong {
+            color: var(--text-main);
+        }
+
+        .lesson-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+            gap: 22px;
+            margin-top: 24px;
+        }
+
+        .lesson-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            padding: 26px;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(12px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lesson-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+            opacity: 0;
+            transition: opacity 0.25s;
+        }
+
+        .lesson-card:hover {
+            background: var(--card-hover);
+            border-color: var(--accent-blue);
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .lesson-card:hover::before {
+            opacity: 1;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .lesson-badge {
+            background: linear-gradient(135deg, #0284c7, #2563eb);
+            color: white;
+            font-weight: 800;
+            font-size: 0.9rem;
+            padding: 4px 12px;
+            border-radius: 6px;
+        }
+
+        .topic-tag {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--accent-emerald);
+            background: rgba(52, 211, 153, 0.12);
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(52, 211, 153, 0.25);
+        }
+
+        .card-title {
+            font-size: 1.45rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .card-desc {
+            font-size: 1.02rem;
+            color: var(--text-sub);
+            line-height: 1.6;
+            margin-bottom: 18px;
+            flex-grow: 1;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--accent-blue);
+            padding-top: 14px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .arrow-icon {
+            transition: transform 0.2s;
+        }
+
+        .lesson-card:hover .arrow-icon {
+            transform: translateX(6px);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: var(--text-sub);
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="top-badge">고등학교 2학년 기하 | 전자칠판 스마트 수업자료</span>
+            <h1>Ⅰ. 이차곡선 (Conic Sections)</h1>
+            <p class="subtitle">교과서(주교재)와 EBS 올림포스(부교재)를 완벽 융합하여 인터랙티브 증명, 실시간 작도기, 심화 기출, 수학사를 담은 프리미엄 슬라이드</p>
+            <div class="info-bar">
+                <div class="info-pill">📖 <strong>주교재</strong>: 기하 교과서 (p.10 ~ p.53)</div>
+                <div class="info-pill">📘 <strong>부교재</strong>: EBS 올림포스 기하 (01강, 02강 전 문항)</div>
+                <div class="info-pill">✨ <strong>스마트 기능</strong>: 빈칸 증명, 실시간 슬라이더 작도기, 수학자 스토리, 판서 여백</div>
+                <a href="qna_dashboard.html" class="info-pill" style="text-decoration:none; background:linear-gradient(135deg, rgba(192, 132, 252, 0.25), rgba(56, 189, 248, 0.25)); border-color:var(--accent-purple); color:var(--accent-purple); font-weight:800;" title="학생 질문 및 선생님 답변 관리">
+                    💬 <strong>Q&A 질문/답변 통합 관리함</strong> ↗
+                </a>
+            </div>
+        </header>
+
+        <main class="lesson-grid">
+            
+        <a href="01차시-이차곡선_포물선의_방정식.html" class="lesson-card">
+            <div class="card-header">
+                <span class="lesson-badge">01차시</span>
+                <span class="topic-tag">포물선</span>
+                <span style="font-size:0.8rem; font-weight:700; color:var(--accent-purple);">11 슬라이드</span>
+            </div>
+            <h2 class="card-title">포물선의 방정식</h2>
+            <p class="card-desc">포물선 정의 유도 빈칸 증명, p 실시간 슬라이더 작도기, 올림포스 01강 필수/심화, 아르키메데스 & 파라볼라 안테나 스토리</p>
+            <div class="card-footer">
+                <span>슬라이드 바로 열기</span>
+                <span class="arrow-icon">→</span>
+            </div>
+        </a>
+        
+        <a href="02차시-이차곡선_포물선의_평행이동.html" class="lesson-card">
+            <div class="card-header">
+                <span class="lesson-badge">02차시</span>
+                <span class="topic-tag">포물선</span>
+                <span style="font-size:0.8rem; font-weight:700; color:var(--accent-purple);">10 슬라이드</span>
+            </div>
+            <h2 class="card-title">포물선의 평행이동</h2>
+            <p class="card-desc">평행이동 공식, 일반형 완전제곱식 변형 인터랙션, 축 접촉 조건, 올림포스 기출, 갈릴레이 & 금문교 현수선 스토리</p>
+            <div class="card-footer">
+                <span>슬라이드 바로 열기</span>
+                <span class="arrow-icon">→</span>
+            </div>
+        </a>
+        
+        <a href="03차시-이차곡선_타원의_방정식.html" class="lesson-card">
+            <div class="card-header">
+                <span class="lesson-badge">03차시</span>
+                <span class="topic-tag">타원</span>
+                <span style="font-size:0.8rem; font-weight:700; color:var(--accent-purple);">11 슬라이드</span>
+            </div>
+            <h2 class="card-title">타원의 방정식</h2>
+            <p class="card-desc">타원 표준형 유도 빈칸 증명, a/b 실시간 슬라이더 타원 작도기, 올림포스 필수/심화, 케플러 행성궤도 & 쇄석기 스토리</p>
+            <div class="card-footer">
+                <span>슬라이드 바로 열기</span>
+                <span class="arrow-icon">→</span>
+            </div>
+        </a>
+        
+        <a href="04차시-이차곡선_타원의_평행이동.html" class="lesson-card">
+            <div class="card-header">
+                <span class="lesson-badge">04차시</span>
+                <span class="topic-tag">타원</span>
+                <span style="font-size:0.8rem; font-weight:700; color:var(--accent-purple);">10 슬라이드</span>
+            </div>
+            <h2 class="card-title">타원의 평행이동</h2>
+            <p class="card-desc">타원 평행이동, 일반형 표준형 변환, 특수각 삼각비 결합 올림포스 심화, 속삭이는 회랑 & 타원 당구대 스토리</p>
+            <div class="card-footer">
+                <span>슬라이드 바로 열기</span>
+                <span class="arrow-icon">→</span>
+            </div>
+        </a>
+        
+        <a href="05차시-이차곡선_쌍곡선의_방정식과_점근선.html" class="lesson-card">
+            <div class="card-header">
+                <span class="lesson-badge">05차시</span>
+                <span class="topic-tag">쌍곡선</span>
+                <span style="font-size:0.8rem; font-weight:700; color:var(--accent-purple);">11 슬라이드</span>
+            </div>
+            <h2 class="card-title">쌍곡선의 방정식과 점근선</h2>
+            <p class="card-desc">쌍곡선 표준형 유도 빈칸 증명, a/b 슬라이더 점근선 실시간 작도기, 올림포스 필수, 아폴로니오스 & 냉각탑 스토리</p>
+            <div class="card-footer">
+                <span>슬라이드 바로 열기</span>
+                <span class="arrow-icon">→</span>
+            </div>
+        </a>
+        
+        <a href="06차시-이차곡선_쌍곡선의_평행이동과_총정리.html" class="lesson-card">
+            <div class="card-header">
+                <span class="lesson-badge">06차시</span>
+                <span class="topic-tag">쌍곡선/총정리</span>
+                <span style="font-size:0.8rem; font-weight:700; color:var(--accent-purple);">11 슬라이드</span>
+            </div>
+            <h2 class="card-title">쌍곡선의 평행이동과 총정리</h2>
+            <p class="card-desc">쌍곡선 평행이동, 이차곡선 판별 기준 총정리 표, 올림포스 기출 킬러, 데카르트 & GPS/LORAN 항법 스토리</p>
+            <div class="card-footer">
+                <span>슬라이드 바로 열기</span>
+                <span class="arrow-icon">→</span>
+            </div>
+        </a>
+        
+        <a href="07차시-이차곡선_포물선의_접선의_방정식.html" class="lesson-card">
+            <div class="card-header">
+                <span class="lesson-badge">07차시</span>
+                <span class="topic-tag">접선</span>
+                <span style="font-size:0.8rem; font-weight:700; color:var(--accent-purple);">10 슬라이드</span>
+            </div>
+            <h2 class="card-title">포물선의 접선의 방정식</h2>
+            <p class="card-desc">기울기 접선 D=0 유도 빈칸 증명, 기울기 m 슬라이더 실시간 접선 회전기, 올림포스 02강, 자동차 헤드라이트 스토리</p>
+            <div class="card-footer">
+                <span>슬라이드 바로 열기</span>
+                <span class="arrow-icon">→</span>
+            </div>
+        </a>
+        
+        <a href="08차시-이차곡선_타원과_쌍곡선의_접선의_방정식.html" class="lesson-card">
+            <div class="card-header">
+                <span class="lesson-badge">08차시</span>
+                <span class="topic-tag">접선/마무리</span>
+                <span style="font-size:0.8rem; font-weight:700; color:var(--accent-purple);">12 슬라이드</span>
+            </div>
+            <h2 class="card-title">타원과 쌍곡선의 접선의 방정식</h2>
+            <p class="card-desc">타원/쌍곡선 접선 공식, 음함수 미분법 유도 증명, 두 접선 직교 조건, JWST 우주망원경 스토리 & Ⅰ단원 총정리 마인드맵</p>
+            <div class="card-footer">
+                <span>슬라이드 바로 열기</span>
+                <span class="arrow-icon">→</span>
+            </div>
+        </a>
+        
+        </main>
+
+        <footer>
+            <p>© 고등학교 기하 수업자료 • 전자칠판(Smart Board) 전용 인터랙티브 프레젠테이션 시스템</p>
+        </footer>
+    </div>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            if (window.renderMathInElement) {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false}
+                    ],
+                    throwOnError: false
+                });
+            }
+        });
+    </script>
+</body>
+</html>

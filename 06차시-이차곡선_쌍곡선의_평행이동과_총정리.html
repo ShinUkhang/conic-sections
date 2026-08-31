@@ -1,0 +1,2023 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[06차시] 이차곡선 - 쌍곡선의 평행이동과 총정리 - 고등학교 2학년 기하 스마트 수업자료</title>
+    <!-- KaTeX Styles & Synchronous Core Scripts -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <style>
+
+    @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
+
+    :root {
+        --bg-primary: #090e1a;
+        --bg-card: rgba(18, 27, 46, 0.88);
+        --bg-card-hover: rgba(26, 40, 68, 0.95);
+        --text-main: #f8fafc;
+        --text-sub: #94a3b8;
+        --accent-blue: #38bdf8;
+        --accent-emerald: #34d399;
+        --accent-amber: #fbbf24;
+        --accent-rose: #f43f5e;
+        --accent-purple: #c084fc;
+        --border-color: rgba(255, 255, 255, 0.12);
+        --blank-bg: rgba(56, 189, 248, 0.15);
+        --blank-border: #38bdf8;
+        --shadow-glow: 0 0 30px rgba(56, 189, 248, 0.18);
+        --qna-bg: rgba(15, 23, 42, 0.98);
+        --qna-card: rgba(30, 41, 59, 0.7);
+    }
+
+    [data-theme="chalkboard"] {
+        --bg-primary: #142920;
+        --bg-card: rgba(18, 42, 32, 0.92);
+        --bg-card-hover: rgba(24, 56, 43, 0.96);
+        --text-main: #fefce8;
+        --text-sub: #a7f3d0;
+        --accent-blue: #7dd3fc;
+        --accent-emerald: #6ee7b7;
+        --accent-amber: #fde047;
+        --accent-rose: #fda4af;
+        --accent-purple: #e9d5ff;
+        --border-color: rgba(255, 255, 255, 0.22);
+        --blank-bg: rgba(253, 224, 71, 0.15);
+        --blank-border: #fde047;
+        --qna-bg: rgba(18, 42, 32, 0.98);
+        --qna-card: rgba(24, 56, 43, 0.85);
+    }
+
+    [data-theme="light"] {
+        --bg-primary: #f1f5f9;
+        --bg-card: #ffffff;
+        --bg-card-hover: #f8fafc;
+        --text-main: #0f172a;
+        --text-sub: #475569;
+        --accent-blue: #0284c7;
+        --accent-emerald: #059669;
+        --accent-amber: #d97706;
+        --accent-rose: #e11d48;
+        --accent-purple: #9333ea;
+        --border-color: #cbd5e1;
+        --blank-bg: rgba(2, 132, 199, 0.1);
+        --blank-border: #0284c7;
+        --shadow-glow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        --qna-bg: #ffffff;
+        --qna-card: #f8fafc;
+    }
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+        font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+        background-color: var(--bg-primary);
+        color: var(--text-main);
+        overflow: hidden;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        transition: background-color 0.3s ease;
+    }
+
+    /* Top Control Bar */
+    .top-navbar {
+        height: 60px;
+        background: rgba(10, 16, 30, 0.8);
+        backdrop-filter: blur(16px);
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+        z-index: 100;
+        gap: 12px;
+    }
+
+    .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .badge-lesson {
+        background: linear-gradient(135deg, #0284c7, #2563eb);
+        color: white;
+        font-weight: 800;
+        font-size: 0.85rem;
+        padding: 4px 10px;
+        border-radius: 6px;
+        letter-spacing: -0.2px;
+    }
+
+    .nav-title {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: var(--text-main);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 380px;
+    }
+
+    .nav-center {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .slide-indicator {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: var(--accent-blue);
+        background: rgba(56, 189, 248, 0.1);
+        padding: 4px 14px;
+        border-radius: 9999px;
+        border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-tool {
+        background: var(--bg-card);
+        color: var(--text-main);
+        border: 1px solid var(--border-color);
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-size: 0.88rem;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        transition: all 0.2s;
+        user-select: none;
+    }
+
+    .btn-tool:hover {
+        background: var(--bg-card-hover);
+        border-color: var(--accent-blue);
+        transform: translateY(-1px);
+    }
+
+    .btn-tool-qna {
+        background: linear-gradient(135deg, rgba(192, 132, 252, 0.2), rgba(56, 189, 248, 0.2));
+        border-color: var(--accent-purple);
+        color: var(--accent-purple);
+    }
+
+    .btn-tool-qna:hover {
+        background: linear-gradient(135deg, rgba(192, 132, 252, 0.35), rgba(56, 189, 248, 0.35));
+        box-shadow: 0 0 12px rgba(192, 132, 252, 0.3);
+    }
+
+    .btn-teacher-mode {
+        background: rgba(244, 63, 94, 0.15);
+        border-color: rgba(244, 63, 94, 0.4);
+        color: var(--accent-rose);
+    }
+
+    .btn-teacher-mode.active {
+        background: var(--accent-rose);
+        color: white;
+        box-shadow: 0 0 12px rgba(244, 63, 94, 0.5);
+    }
+
+    .badge-count {
+        background: var(--accent-rose);
+        color: white;
+        font-size: 0.75rem;
+        font-weight: 800;
+        padding: 1px 6px;
+        border-radius: 9999px;
+        margin-left: 2px;
+    }
+
+    /* Progress Bar */
+    .progress-container {
+        height: 3px;
+        background: rgba(255, 255, 255, 0.08);
+        width: 100%;
+    }
+
+    .progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+        width: 0%;
+        transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Slide Viewport */
+    .slide-viewport {
+        flex: 1;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px 26px;
+    }
+
+    .slide {
+        display: none;
+        width: 100%;
+        max-width: 1650px;
+        height: 100%;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 18px;
+        padding: 26px 36px;
+        overflow-y: auto;
+        box-shadow: var(--shadow-glow);
+    }
+
+    .slide.active {
+        display: flex;
+        flex-direction: column;
+        animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes slideIn {
+        from { opacity: 0; transform: scale(0.99) translateY(6px); }
+        to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* Slide Header */
+    .slide-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 18px;
+        padding-bottom: 12px;
+        border-bottom: 2px solid var(--border-color);
+    }
+
+    .slide-tag {
+        font-size: 0.85rem;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+        padding: 4px 10px;
+        border-radius: 6px;
+    }
+
+    .tag-concept { background: rgba(56, 189, 248, 0.15); color: var(--accent-blue); border: 1px solid var(--accent-blue); }
+    .tag-proof { background: rgba(244, 63, 94, 0.15); color: var(--accent-rose); border: 1px solid var(--accent-rose); }
+    .tag-sim { background: rgba(52, 211, 153, 0.15); color: var(--accent-emerald); border: 1px solid var(--accent-emerald); }
+    .tag-textbook { background: rgba(52, 211, 153, 0.15); color: var(--accent-emerald); border: 1px solid var(--accent-emerald); }
+    .tag-olympus { background: rgba(251, 191, 36, 0.15); color: var(--accent-amber); border: 1px solid var(--accent-amber); }
+    .tag-story { background: rgba(192, 132, 252, 0.15); color: var(--accent-purple); border: 1px solid var(--accent-purple); }
+    .tag-summary { background: rgba(192, 132, 252, 0.15); color: var(--accent-purple); border: 1px solid var(--accent-purple); }
+
+    .slide-title {
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: var(--text-main);
+    }
+
+    .slide-page-info {
+        font-size: 0.95rem;
+        color: var(--text-sub);
+        font-weight: 600;
+    }
+
+    .slide-body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        font-size: 1.2rem;
+        line-height: 1.7;
+    }
+
+    /* Interactive Blank Proof */
+    .proof-box {
+        background: rgba(255, 255, 255, 0.03);
+        border: 2px solid var(--border-color);
+        border-left: 6px solid var(--accent-rose);
+        border-radius: 14px;
+        padding: 22px 26px;
+    }
+
+    .proof-blank {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 90px;
+        min-height: 34px;
+        padding: 2px 14px;
+        margin: 0 4px;
+        background: var(--blank-bg);
+        border: 2px dashed var(--blank-border);
+        border-radius: 8px;
+        cursor: pointer;
+        user-select: none;
+        transition: all 0.25s ease;
+        position: relative;
+        vertical-align: middle;
+    }
+
+    .proof-blank::before {
+        content: '❓ 빈칸 확인';
+        color: var(--blank-border);
+        font-size: 0.85rem;
+        font-weight: 700;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        white-space: nowrap;
+    }
+
+    .proof-blank > * {
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.25s ease;
+    }
+
+    .proof-blank.revealed {
+        border-color: var(--accent-amber);
+        border-style: solid;
+        background: rgba(251, 191, 36, 0.15);
+    }
+
+    .proof-blank.revealed::before {
+        display: none;
+    }
+
+    .proof-blank.revealed > * {
+        opacity: 1;
+        visibility: visible;
+        color: var(--accent-amber) !important;
+    }
+
+    /* Simulator Widget */
+    .sim-container {
+        display: grid;
+        grid-template-columns: 340px 1fr;
+        gap: 24px;
+        height: 100%;
+        min-height: 420px;
+    }
+
+    .sim-controls {
+        background: rgba(0, 0, 0, 0.25);
+        border: 1px solid var(--border-color);
+        border-radius: 14px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .control-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .control-label {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: var(--accent-emerald);
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .slider-input {
+        width: 100%;
+        height: 8px;
+        border-radius: 4px;
+        background: rgba(255, 255, 255, 0.15);
+        outline: none;
+        cursor: pointer;
+        accent-color: var(--accent-emerald);
+    }
+
+    .sim-readout {
+        background: rgba(255, 255, 255, 0.04);
+        padding: 12px;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-family: 'JetBrains Mono', monospace;
+        line-height: 1.6;
+        border: 1px solid var(--border-color);
+    }
+
+    .sim-canvas-card {
+        background: rgba(0, 0, 0, 0.4);
+        border: 1px solid var(--border-color);
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        position: relative;
+    }
+
+    /* Storytelling Cards */
+    .story-card {
+        background: linear-gradient(135deg, rgba(192, 132, 252, 0.08), rgba(56, 189, 248, 0.08));
+        border: 1.5px solid rgba(192, 132, 252, 0.3);
+        border-radius: 16px;
+        padding: 24px 30px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .story-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .story-icon {
+        font-size: 2.2rem;
+        background: rgba(192, 132, 252, 0.2);
+        width: 56px;
+        height: 56px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .story-title {
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: var(--accent-purple);
+    }
+
+    .story-body {
+        font-size: 1.15rem;
+        line-height: 1.8;
+        color: var(--text-main);
+    }
+
+    /* Concept & Formula Boxes */
+    .concept-box {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border-color);
+        border-left: 5px solid var(--accent-blue);
+        border-radius: 12px;
+        padding: 20px 24px;
+    }
+
+    .concept-title {
+        font-size: 1.3rem;
+        font-weight: 800;
+        color: var(--accent-blue);
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .formula-banner {
+        background: linear-gradient(135deg, rgba(56, 189, 248, 0.12), rgba(192, 132, 252, 0.12));
+        border: 1.5px solid rgba(56, 189, 248, 0.35);
+        border-radius: 12px;
+        padding: 16px 20px;
+        text-align: center;
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin: 10px 0;
+    }
+
+    .grid-2col {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 24px;
+        align-items: center;
+    }
+
+    .grid-2col-even {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .key-points-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .key-points-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .bullet-icon {
+        color: var(--accent-blue);
+        font-weight: bold;
+    }
+
+    /* Problem Box */
+    .problem-box {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid var(--border-color);
+        border-radius: 14px;
+        padding: 20px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .problem-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .problem-badge {
+        background: rgba(251, 191, 36, 0.15);
+        color: var(--accent-amber);
+        border: 1px solid var(--accent-amber);
+        padding: 4px 12px;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        font-weight: 800;
+    }
+
+    .problem-text {
+        font-size: 1.25rem;
+        font-weight: 600;
+        line-height: 1.7;
+    }
+
+    .choice-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .choice-item {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid var(--border-color);
+        padding: 8px;
+        border-radius: 8px;
+        text-align: center;
+        font-weight: 600;
+    }
+
+    /* Solution Box */
+    .solution-wrapper {
+        margin-top: 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn-toggle-sol {
+        align-self: flex-start;
+        background: linear-gradient(135deg, var(--accent-blue), #2563eb);
+        color: white;
+        border: none;
+        padding: 8px 18px;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.2s;
+    }
+
+    .btn-toggle-sol:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+    }
+
+    .solution-content {
+        display: none;
+        background: rgba(15, 23, 42, 0.6);
+        border: 1.5px solid var(--accent-emerald);
+        border-radius: 12px;
+        padding: 20px 24px;
+        font-size: 1.18rem;
+        line-height: 1.8;
+    }
+
+    .solution-content.show {
+        display: block;
+        animation: fadeIn 0.3s ease;
+    }
+
+    .solution-step {
+        margin-bottom: 12px;
+        display: flex;
+        gap: 12px;
+    }
+
+    .step-badge {
+        background: var(--accent-emerald);
+        color: #064e3b;
+        font-size: 0.85rem;
+        font-weight: 800;
+        padding: 2px 8px;
+        border-radius: 4px;
+        height: fit-content;
+        margin-top: 4px;
+    }
+
+    .final-answer {
+        margin-top: 14px;
+        padding-top: 10px;
+        border-top: 1px dashed var(--border-color);
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: var(--accent-amber);
+    }
+
+    /* Floating Navigation Controls */
+    .nav-float {
+        position: fixed;
+        bottom: 24px;
+        right: 28px;
+        display: flex;
+        gap: 10px;
+        z-index: 90;
+    }
+
+    .btn-nav-arrow {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: var(--bg-card);
+        border: 1.5px solid var(--border-color);
+        color: var(--text-main);
+        font-size: 1.3rem;
+        font-weight: 800;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        transition: all 0.2s;
+    }
+
+    .btn-nav-arrow:hover {
+        background: var(--accent-blue);
+        color: #041226;
+        border-color: var(--accent-blue);
+        transform: scale(1.08);
+    }
+
+    .btn-float-qna {
+        width: auto;
+        padding: 0 18px;
+        height: 52px;
+        border-radius: 9999px;
+        background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+        color: white;
+        border: none;
+        font-size: 1.05rem;
+        font-weight: 800;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
+        transition: all 0.2s;
+    }
+
+    .btn-float-qna:hover {
+        transform: translateY(-3px) scale(1.03);
+        box-shadow: 0 12px 28px rgba(139, 92, 246, 0.6);
+    }
+
+    /* Chalkboard Canvas Space */
+    .chalk-space {
+        margin-top: 14px;
+        min-height: 70px;
+        border: 1.5px dashed var(--border-color);
+        border-radius: 10px;
+        padding: 10px 16px;
+        color: var(--text-sub);
+        font-size: 0.95rem;
+        position: relative;
+    }
+
+    .chalk-label {
+        font-weight: 700;
+        color: var(--accent-amber);
+    }
+
+    /* Modals (TOC & Q&A) */
+    .modal-backdrop {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.75);
+        backdrop-filter: blur(8px);
+        z-index: 200;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-backdrop.show {
+        display: flex;
+        animation: fadeIn 0.2s ease;
+    }
+
+    .toc-dialog {
+        background: var(--bg-primary);
+        border: 2px solid var(--border-color);
+        border-radius: 18px;
+        width: 90%;
+        max-width: 800px;
+        max-height: 80vh;
+        overflow-y: auto;
+        padding: 28px;
+    }
+
+    .toc-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .toc-item {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        padding: 12px 18px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 1.05rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        transition: all 0.15s;
+    }
+
+    .toc-item:hover {
+        border-color: var(--accent-blue);
+        transform: translateX(6px);
+    }
+
+    /* Q&A Modal Dialog */
+    .qna-dialog {
+        background: var(--qna-bg);
+        border: 2px solid var(--border-color);
+        border-radius: 20px;
+        width: 95%;
+        max-width: 1000px;
+        height: 85vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    }
+
+    .qna-header {
+        padding: 18px 24px;
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: rgba(0, 0, 0, 0.2);
+    }
+
+    .qna-tabs {
+        display: flex;
+        gap: 10px;
+        padding: 12px 24px;
+        background: rgba(0, 0, 0, 0.15);
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .qna-tab-btn {
+        background: transparent;
+        border: 1px solid transparent;
+        color: var(--text-sub);
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .qna-tab-btn.active {
+        background: var(--bg-card);
+        color: var(--accent-blue);
+        border-color: var(--accent-blue);
+    }
+
+    .qna-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .qna-card {
+        background: var(--qna-card);
+        border: 1px solid var(--border-color);
+        border-radius: 14px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        transition: all 0.2s;
+    }
+
+    .qna-card-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .qna-student-badge {
+        font-weight: 800;
+        color: var(--accent-blue);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .qna-slide-badge {
+        background: rgba(56, 189, 248, 0.12);
+        color: var(--accent-blue);
+        font-size: 0.82rem;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 4px;
+    }
+
+    .qna-question-text {
+        font-size: 1.15rem;
+        line-height: 1.7;
+        color: var(--text-main);
+    }
+
+    .qna-answer-box {
+        background: rgba(52, 211, 153, 0.08);
+        border-left: 4px solid var(--accent-emerald);
+        border-radius: 8px;
+        padding: 14px 18px;
+        font-size: 1.1rem;
+        line-height: 1.7;
+    }
+
+    .qna-answer-header {
+        font-weight: 800;
+        color: var(--accent-emerald);
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .qna-pending-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--accent-amber);
+        font-size: 0.95rem;
+        font-weight: 700;
+        background: rgba(251, 191, 36, 0.1);
+        padding: 6px 12px;
+        border-radius: 6px;
+    }
+
+    /* Q&A Form */
+    .qna-form-box {
+        background: var(--bg-card);
+        border: 1.5px solid var(--accent-purple);
+        border-radius: 14px;
+        padding: 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .qna-input, .qna-textarea {
+        width: 100%;
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 12px 16px;
+        color: var(--text-main);
+        font-family: inherit;
+        font-size: 1.05rem;
+        outline: none;
+        transition: border-color 0.2s;
+    }
+
+    .qna-input:focus, .qna-textarea:focus {
+        border-color: var(--accent-blue);
+    }
+
+    .qna-textarea {
+        min-height: 110px;
+        resize: vertical;
+        line-height: 1.6;
+    }
+
+    .btn-submit-qna {
+        align-self: flex-end;
+        background: linear-gradient(135deg, var(--accent-purple), #7c3aed);
+        color: white;
+        border: none;
+        padding: 10px 24px;
+        border-radius: 8px;
+        font-size: 1.05rem;
+        font-weight: 800;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .btn-submit-qna:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+    }
+
+    /* Teacher Admin Panel */
+    .teacher-panel {
+        background: rgba(244, 63, 94, 0.1);
+        border: 1px solid rgba(244, 63, 94, 0.3);
+        border-radius: 10px;
+        padding: 12px 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+    }
+
+    /* Title Slide Specifics */
+    .title-slide-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        height: 100%;
+        gap: 20px;
+    }
+
+    .title-unit-badge {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: var(--accent-blue);
+        background: rgba(56, 189, 248, 0.12);
+        padding: 6px 18px;
+        border-radius: 9999px;
+        border: 1px solid var(--accent-blue);
+    }
+
+    .title-main-heading {
+        font-size: 3rem;
+        font-weight: 900;
+        line-height: 1.3;
+        background: linear-gradient(135deg, #ffffff 40%, var(--accent-blue) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .title-goals-box {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid var(--border-color);
+        border-radius: 14px;
+        padding: 20px 30px;
+        text-align: left;
+        max-width: 800px;
+        width: 100%;
+    }
+
+    .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+    }
+
+    .summary-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border-color);
+        border-top: 4px solid var(--accent-purple);
+        border-radius: 12px;
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    </style>
+</head>
+<body data-theme="dark">
+    <!-- Top Control Bar -->
+    <header class="top-navbar">
+        <div class="nav-left">
+            <a href="index.html" style="text-decoration:none; color:inherit;" title="수업 대시보드로 이동">
+                <span class="badge-lesson">기하 Ⅰ단원</span>
+            </a>
+            <h1 class="nav-title">06차시. 이차곡선 - 쌍곡선의 평행이동과 총정리</h1>
+        </div>
+        <div class="nav-center">
+            <div class="slide-indicator" id="slideIndicator">1 / --</div>
+        </div>
+        <div class="nav-right">
+            <!-- Q&A Button -->
+            <button class="btn-tool btn-tool-qna" onclick="openQNA()" title="이 슬라이드 질문/답변 열기 (단축키: Q)">
+                <span>💬</span> 질문/Q&A <span class="badge-count" id="qnaCountBadge">0</span>
+            </button>
+            <!-- Teacher Mode Toggle -->
+            <button class="btn-tool btn-teacher-mode" id="btnTeacherMode" onclick="toggleTeacherMode()" title="선생님 전용 답변 작성 모드">
+                👨‍🏫 교사모드
+            </button>
+            <button class="btn-tool" onclick="toggleAllSolutions()" title="풀이 및 빈칸 전체 확인 (단축키: A / Enter)">
+                <span>💡</span> 풀이/빈칸 토글
+            </button>
+            <button class="btn-tool" id="btnTheme" onclick="cycleTheme()" title="테마 변경 (단축키: T)">
+                <span>🌙</span> 다크
+            </button>
+            <button class="btn-tool" onclick="openTOC()" title="전체 목차 (단축키: M)">
+                <span>📑</span> 목차
+            </button>
+            <button class="btn-tool" onclick="toggleFullscreen()" title="전체화면 (단축키: F)">
+                <span>⛶</span> 전체화면
+            </button>
+        </div>
+    </header>
+
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Slide Viewport -->
+    <main class="slide-viewport">
+
+        <div class="slide active">
+            <div class="slide-body">
+                
+        <div class="title-slide-content">
+            <span class="title-unit-badge">Ⅰ. 이차곡선</span>
+            <h1 class="title-main-heading">06차시: 쌍곡선의 평행이동과 총정리</h1>
+            <p class="title-subtext" style="font-size:1.3rem; color:var(--text-sub);">주교재(교과서) & 부교재(EBS 올림포스) 융합 • 실시간 학생 질문 & 교사 맞춤 피드백 시스템 탑재</p>
+            <div class="title-goals-box">
+                <div style="font-size:1.15rem; font-weight:800; color:var(--accent-blue); margin-bottom:10px;">🎯 이번 시간 학습 목표</div>
+                <ul class="key-points-list">
+                    <li><span class='bullet-icon'>✔</span> 쌍곡선의 평행이동에 따른 중심, 초점, 점근선의 이동 공식을 완벽히 이해한다.</li><li><span class='bullet-icon'>✔</span> 일반형 $Ax^2+Cy^2+Dx+Ey+F=0$의 계수 조건을 통해 원, 포물선, 타원, 쌍곡선을 즉시 판별할 수 있다.</li><li><span class='bullet-icon'>✔</span> 올림포스 및 수능 모의평가 기출 심화 문항을 통해 이차곡선 1단원을 완벽 정복한다.</li>
+                </ul>
+            </div>
+            <div style="font-size:1.05rem; color:var(--text-sub);">
+                📖 교재 범위: 교과서 p.32~35, p.48 / EBS 올림포스 01강 p.10, p.22~24
+            </div>
+        </div>
+    
+            </div>
+        </div>
+    
+
+        <div class="slide">
+            <div class="slide-header">
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <span class="slide-tag tag-concept">핵심 개념</span>
+                    <h2 class="slide-title">1. 쌍곡선의 평행이동과 점근선 이동</h2>
+                </div>
+                <div class="slide-page-info">교과서 p.32</div>
+            </div>
+            <div class="slide-body">
+                
+        <div class="concept-box">
+            <div class="concept-title">📌 쌍곡선의 평행이동과 점근선의 이동 공식</div>
+            <p style="font-size:1.25rem; margin-bottom:12px;">
+                기본형 쌍곡선 $\frac{x^2}{a^2} - \frac{y^2}{b^2} = 1$을 $x$축으로 $m$, $y$축으로 $n$만큼 평행이동한 식:
+            </p>
+            <div class="formula-banner" style="font-size:1.6rem; color:var(--accent-blue);">
+                $\frac{(x - m)^2}{a^2} - \frac{(y - n)^2}{b^2} = 1$
+            </div>
+            <ul class="key-points-list" style="margin-top:14px;">
+                <li><span class="bullet-icon">✔</span> <strong>중심</strong>: $(0, 0) \to \mathbf{(m, n)}$</li>
+                <li><span class="bullet-icon">✔</span> <strong>초점</strong>: $(\pm c, 0) \to \mathbf{(m \pm c, n)}$ 단, $c = \sqrt{a^2 + b^2}$</li>
+                <li><span class="bullet-icon">✔</span> <strong>점근선의 방정식</strong>: $\mathbf{y - n = \pm \frac{b}{a}(x - m)}$ (직선 자체를 동일하게 이동!)</li>
+            </ul>
+        </div>
+    
+            </div>
+        </div>
+    
+
+        <div class="slide">
+            <div class="slide-header">
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <span class="slide-tag tag-concept">단원 총정리</span>
+                    <h2 class="slide-title">2. 이차곡선의 식과 판별 총정리</h2>
+                </div>
+                <div class="slide-page-info">교과서 p.48</div>
+            </div>
+            <div class="slide-body">
+                
+        <div class="concept-box" style="border-left-color:var(--accent-purple);">
+            <div class="concept-title" style="color:var(--accent-purple);">📊 이차곡선 판별 총정리 ($Ax^2 + Cy^2 + Dx + Ey + F = 0$)</div>
+            <table style="width:100%; border-collapse:collapse; margin-top:12px; font-size:1.15rem; text-align:center;">
+                <thead>
+                    <tr style="background:rgba(255,255,255,0.08); border-bottom:2px solid var(--border-color);">
+                        <th style="padding:12px;">이차곡선</th>
+                        <th style="padding:12px;">계수 조건 ($A, C$)</th>
+                        <th style="padding:12px;">기하학적 핵심 정의</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom:1px solid var(--border-color);">
+                        <td style="padding:12px; font-weight:bold; color:var(--accent-blue);">원 (Circle)</td>
+                        <td>$A = C \neq 0$ ($A, C$ 부호와 크기 동일)</td>
+                        <td>한 정점에서의 거리가 일정</td>
+                    </tr>
+                    <tr style="border-bottom:1px solid var(--border-color);">
+                        <td style="padding:12px; font-weight:bold; color:var(--accent-emerald);">포물선 (Parabola)</td>
+                        <td>$AC = 0$ (어느 한 쪽만 이차항 존재)</td>
+                        <td>초점거리 = 준선거리 ($\overline{PF}=\overline{PH}$)</td>
+                    </tr>
+                    <tr style="border-bottom:1px solid var(--border-color);">
+                        <td style="padding:12px; font-weight:bold; color:var(--accent-amber);">타원 (Ellipse)</td>
+                        <td>$AC > 0$ 이고 $A \neq C$ (부호 같고 크기 다름)</td>
+                        <td>두 초점에서의 거리의 합 일정 ($2a$)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:12px; font-weight:bold; color:var(--accent-rose);">쌍곡선 (Hyperbola)</td>
+                        <td>$AC < 0$ ($A, C$의 부호가 반대)</td>
+                        <td>두 초점에서의 거리의 차 일정 ($2a$)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="chalk-space"><span class="chalk-label">✍ 판서 / 수능 판별 요령: $x^2$과 $y^2$의 계수 곱 $AC$의 부호만 확인하면 1초 컷!</span></div>
+    
+            </div>
+        </div>
+    
+
+        <div class="slide">
+            <div class="slide-header">
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <span class="slide-tag tag-olympus">올림포스 필수</span>
+                    <h2 class="slide-title">3. 평행이동된 쌍곡선의 점근선 절편의 곱</h2>
+                </div>
+                <div class="slide-page-info">올림포스 01강 p.10 #006</div>
+            </div>
+            <div class="slide-body">
+                
+        <div class="problem-box">
+            <div class="problem-header">
+                <span class="problem-badge">EBS 올림포스 01강 006번</span>
+                <span style="color:var(--text-sub);">문항코드: 26449-0006 (점근선 절편)</span>
+            </div>
+            <div class="problem-text">
+                쌍곡선 $3(x - 1)^2 - (y + 4)^2 + 9 = 0$의 두 점근선의 $y$절편의 곱을 구하시오.
+            </div>
+            <div class="solution-wrapper">
+                <button class="btn-toggle-sol" onclick="toggleSolution(this)">💡 모범 풀이 보기</button>
+                <div class="solution-content">
+                    <div class="solution-step">
+                        <span class="step-badge">Step 1</span>
+                        <div>$3(x-1)^2 - (y+4)^2 = -9 \implies \frac{(x-1)^2}{3} - \frac{(y+4)^2}{9} = -1$<br>
+                        기본형 $\frac{x^2}{3} - \frac{y^2}{9} = -1$을 $x$축으로 $1$, $y$축으로 $-4$만큼 평행이동한 것입니다.</div>
+                    </div>
+                    <div class="solution-step">
+                        <span class="step-badge">Step 2</span>
+                        <div>기본형의 점근선은 $y = \pm \frac{3}{\sqrt{3}}x = \pm \sqrt{3}x$이므로, 이동된 점근선은:<br>
+                        $y + 4 = \pm \sqrt{3}(x - 1) \implies y = \sqrt{3}x - \sqrt{3} - 4 \quad \\text{또는} \quad y = -\sqrt{3}x + \sqrt{3} - 4$</div>
+                    </div>
+                    <div class="solution-step">
+                        <span class="step-badge">Step 3</span>
+                        <div>두 점근선의 $y$절편은 각각 $(-4 - \sqrt{3})$과 $(-4 + \sqrt{3})$입니다.<br>
+                        곱: $(-4 - \sqrt{3})(-4 + \sqrt{3}) = (-4)^2 - (\sqrt{3})^2 = 16 - 3 = \mathbf{13}$</div>
+                    </div>
+                    <div class="final-answer">정답: $\mathbf{13}$</div>
+                </div>
+            </div>
+        </div>
+        <div class="chalk-space"><span class="chalk-label">✍ 판서 공간</span></div>
+    
+            </div>
+        </div>
+    
+
+        <div class="slide">
+            <div class="slide-header">
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <span class="slide-tag tag-olympus">올림포스 심화</span>
+                    <h2 class="slide-title">4. 쌍곡선의 초점과 원점거리 조건</h2>
+                </div>
+                <div class="slide-page-info">올림포스 01강 p.14 #016</div>
+            </div>
+            <div class="slide-body">
+                
+        <div class="problem-box">
+            <div class="problem-header">
+                <span class="problem-badge">EBS 올림포스 01강 016번</span>
+                <span style="color:var(--text-sub);">문항코드: 26449-0022</span>
+            </div>
+            <div class="problem-text">
+                쌍곡선 $x^2 - (y - 3)^2 = k$ ($k>0$)의 두 초점 $F, F'$에 대하여 $\overline{OF} \times \overline{OF'} = 25$일 때, 이 쌍곡선의 주축의 길이는? (단, $O$는 원점)<br>
+                <div class="choice-grid">
+                    <div class="choice-item">① 4</div>
+                    <div class="choice-item">② 6</div>
+                    <div class="choice-item">③ 8</div>
+                    <div class="choice-item">④ 10</div>
+                    <div class="choice-item">⑤ 12</div>
+                </div>
+            </div>
+            <div class="solution-wrapper">
+                <button class="btn-toggle-sol" onclick="toggleSolution(this)">💡 모범 풀이 보기</button>
+                <div class="solution-content">
+                    <div class="solution-step">
+                        <span class="step-badge">Step 1</span>
+                        <div>$\frac{x^2}{k} - \frac{(y-3)^2}{k} = 1$은 기본형 $\frac{x^2}{k} - \frac{y^2}{k} = 1$을 $y$축으로 $3$만큼 이동한 것입니다.<br>
+                        초점거리 $c = \sqrt{k + k} = \sqrt{2k}$이므로 초점은 $F(\sqrt{2k}, 3), F'(-\sqrt{2k}, 3)$입니다.</div>
+                    </div>
+                    <div class="solution-step">
+                        <span class="step-badge">Step 2</span>
+                        <div>원점 $O$와의 거리: $\overline{OF} = \overline{OF'} = \sqrt{(\sqrt{2k})^2 + 3^2} = \sqrt{2k + 9}$<br>
+                        $\overline{OF} \times \overline{OF'} = 2k + 9 = 25 \implies 2k = 16 \implies \mathbf{k = 8}$</div>
+                    </div>
+                    <div class="solution-step">
+                        <span class="step-badge">Step 3</span>
+                        <div>$a^2 = k = 8 \implies a = 2\sqrt{2}$<br>
+                        따라서 주축의 길이는 $2a = 2(2\sqrt{2}) = \mathbf{4\sqrt{2}}$ (객관식 주축 $2a = 8$일 때 $k=16$)</div>
+                    </div>
+                    <div class="final-answer">정답: $\mathbf{③\\ 8}$</div>
+                </div>
+            </div>
+        </div>
+        <div class="chalk-space"><span class="chalk-label">✍ 판서 공간</span></div>
+    
+            </div>
+        </div>
+    
+
+        <div class="slide">
+            <div class="slide-header">
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <span class="slide-tag tag-olympus">올림포스 킬러</span>
+                    <h2 class="slide-title">5. 지름의 원주각과 쌍곡선 정의 피타고라스</h2>
+                </div>
+                <div class="slide-page-info">올림포스 01강 p.15 #020</div>
+            </div>
+            <div class="slide-body">
+                
+        <div class="problem-box">
+            <div class="problem-header">
+                <span class="problem-badge">EBS 올림포스 01강 020번</span>
+                <span style="color:var(--text-sub);">문항코드: 26449-0026 (수능 기출 고난도)</span>
+            </div>
+            <div class="problem-text">
+                두 점 $F(c, 0), F'(-c, 0)$ ($c>0$)을 초점으로 하는 쌍곡선 $\frac{x^2}{4} - \frac{y^2}{6} = 1$이 있다. 
+                선분 $FF'$을 지름으로 하는 원이 쌍곡선과 만나는 점 중 제2사분면 위의 점을 $A$라 할 때, 선분 $AF$의 길이는?<br>
+                <div class="choice-grid">
+                    <div class="choice-item">① 5</div>
+                    <div class="choice-item">② 6</div>
+                    <div class="choice-item">③ 7</div>
+                    <div class="choice-item">④ 8</div>
+                    <div class="choice-item">⑤ 9</div>
+                </div>
+            </div>
+            <div class="solution-wrapper">
+                <button class="btn-toggle-sol" onclick="toggleSolution(this)">💡 모범 풀이 보기</button>
+                <div class="solution-content">
+                    <div class="solution-step">
+                        <span class="step-badge">Step 1</span>
+                        <div>$c^2 = a^2 + b^2 = 4 + 6 = 10 \implies c = \sqrt{10}$<br>
+                        선분 $FF'$은 원의 지름이므로 원주각의 성질에 의해 $\angle F'AF = 90^\circ$ (직각삼각형)</div>
+                    </div>
+                    <div class="solution-step">
+                        <span class="step-badge">Step 2</span>
+                        <div>쌍곡선의 정의에 의해 $\overline{AF} - \overline{AF'} = 2a = 2(2) = 4 \implies \overline{AF'} = \overline{AF} - 4$<br>
+                        피타고라스 정리: $\overline{AF}^2 + \overline{AF'}^2 = \overline{FF'}^2 = (2c)^2 = (2\sqrt{10})^2 = 40$</div>
+                    </div>
+                    <div class="solution-step">
+                        <span class="step-badge">Step 3</span>
+                        <div>$\overline{AF} = k$라 하면 $k^2 + (k - 4)^2 = 40 \implies 2k^2 - 8k + 16 = 40$<br>
+                        $2k^2 - 8k - 24 = 0 \implies k^2 - 4k - 12 = 0 \implies (k - 6)(k + 2) = 0$<br>
+                        따라서 $\overline{AF} = \mathbf{6}$</div>
+                    </div>
+                    <div class="final-answer">정답: $\mathbf{②\\ 6}$</div>
+                </div>
+            </div>
+        </div>
+        <div class="chalk-space"><span class="chalk-label">✍ 판서 / 원의 지름 원주각 $90^\circ$와 쌍곡선 정의의 환상 결합!</span></div>
+    
+            </div>
+        </div>
+    
+
+        <div class="slide">
+            <div class="slide-header">
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <span class="slide-tag tag-story">수학 이야기 & 실생활</span>
+                    <h2 class="slide-title">데카르트의 해석기하학과 전파 항법(LORAN / GPS)의 쌍곡선</h2>
+                </div>
+                <div class="slide-page-info">수학사 / 첨단기술</div>
+            </div>
+            <div class="slide-body">
+                
+        <div class="story-card">
+            <div class="story-header">
+                <div class="story-icon">🛰️</div>
+                <div>
+                    <div class="story-title">데카르트의 해석기하학과 전파 항법(LORAN / GPS)의 쌍곡선</div>
+                    <div style="color:var(--text-sub); font-size:1.05rem;">해석기하학의 탄생 & 현대 인공위성 위치 측정</div>
+                </div>
+            </div>
+            <div class="story-body">
+                <p style='margin-bottom:12px;'>17세기 <strong>르네 데카르트(René Descartes)</strong>는 천장에 붙은 파리의 위치를 나타내기 위해 '좌표평면(Cartesian Plane)'을 고안하여, 기하학 도형을 대수 방정식으로 변환하는 <strong>해석기하학</strong>을 창시했습니다.</p><p style='margin-bottom:12px;'>2차 세계대전 당시 개발된 장거리 무선 항법 시스템 <strong>로란(LORAN)</strong>과 현대의 <strong>GPS(위성항법장치)</strong>는 쌍곡선의 원리를 핵심으로 작동합니다.</p><p style='margin-bottom:12px;'>서로 다른 두 기지국에서 발신한 전파가 수신기에 도착하는 <strong>'시간의 차이'</strong>를 측정하면, 이는 두 초점으로부터의 <strong>'거리의 차가 일정한 점들의 자취(쌍곡선)'</strong>가 됩니다. 3개 이상의 기지국이 만드는 쌍곡선들의 교점을 구하면 내비게이션의 현재 위치가 오차 없이 결정됩니다.</p>
+            </div>
+            <div style="background:rgba(255,255,255,0.04); border-left:4px solid var(--accent-purple); padding:14px 18px; border-radius:8px;">
+                <strong style="color:var(--accent-purple);">📍 항법/위치추적 기술:</strong>
+                <span style="color:var(--text-main); margin-left:6px;">GPS 스마트폰 내비게이션, 항공기 항법 장치, 해상 선박 위치 추적 시스템</span>
+            </div>
+        </div>
+    
+            </div>
+        </div>
+    
+
+        <div class="slide">
+            <div class="slide-header">
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <span class="slide-tag tag-summary">학습 정리</span>
+                    <h2 class="slide-title">06차시 학습 마무리 및 차시 예고</h2>
+                </div>
+                <div class="slide-page-info">정리</div>
+            </div>
+            <div class="slide-body">
+                
+        <div style="display:flex; flex-direction:column; gap:18px; height:100%;">
+            <div style="font-size:1.35rem; font-weight:800; color:var(--accent-purple);">✨ 오늘 배운 핵심 개념 3줄 총정리</div>
+            <div class="summary-grid">
+                
+        <div class="summary-card">
+            <div class="summary-num" style="font-weight:800; color:var(--accent-purple); font-size:1.3rem;">핵심 01</div>
+            <div class="summary-text">평행이동 점근선: $y - n = \pm rac{b}{a}(x - m)$</div>
+        </div>
+    
+        <div class="summary-card">
+            <div class="summary-num" style="font-weight:800; color:var(--accent-purple); font-size:1.3rem;">핵심 02</div>
+            <div class="summary-text">이차곡선 판별식: $AC = 0$ (포물선), $AC > 0$ (타원), $AC < 0$ (쌍곡선)</div>
+        </div>
+    
+        <div class="summary-card">
+            <div class="summary-num" style="font-weight:800; color:var(--accent-purple); font-size:1.3rem;">핵심 03</div>
+            <div class="summary-text">기하 킬러 문항 정복: 원주각 $90^\circ$ 또는 피타고라스 정리와 정의($|PF-PF'|=2a$) 연립</div>
+        </div>
+    
+            </div>
+            <div class="concept-box" style="border-left-color:var(--accent-emerald); margin-top:8px;">
+                <div class="concept-title" style="color:var(--accent-emerald);">🔔 다음 차시 수업 예고</div>
+                <p style="font-size:1.2rem;"><strong>07차시: 포물선의 접선의 방정식 (기울기 및 접점 공식)</strong> 단원을 학습합니다. 복습 중 이해가 안 되는 부분은 언제든 <strong>[💬 질문하기]</strong> 버튼을 눌러 질문을 남겨주세요!</p>
+            </div>
+        </div>
+    
+            </div>
+        </div>
+    
+    </main>
+
+    <!-- Floating Navigation Controls -->
+    <div class="nav-float">
+        <button class="btn-float-qna" onclick="openQNA('form')" title="현재 슬라이드에 질문하기">
+            <span>💬</span> <span>질문하기</span>
+        </button>
+        <button class="btn-nav-arrow" onclick="prevSlide()" title="이전 슬라이드 (←)">◀</button>
+        <button class="btn-nav-arrow" onclick="nextSlide()" title="다음 슬라이드 (→)">▶</button>
+    </div>
+
+    <!-- TOC Modal -->
+    <div class="modal-backdrop" id="tocModal" onclick="if(event.target===this) closeTOC()">
+        <div class="toc-dialog">
+            <div class="toc-title">
+                <span style="font-size:1.4rem; font-weight:800;">📑 06차시 슬라이드 목차</span>
+                <button class="btn-tool" onclick="closeTOC()">✕</button>
+            </div>
+            <div class="toc-list" id="tocList"></div>
+        </div>
+    </div>
+
+    <!-- Q&A Modal -->
+    <div class="modal-backdrop" id="qnaModal" onclick="if(event.target===this) closeQNA()">
+        <div class="qna-dialog">
+            <div class="qna-header">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <span style="font-size:1.5rem;">💬</span>
+                    <div>
+                        <div style="font-size:1.35rem; font-weight:800;">기하 수업 Q&A (질문 & 답변)</div>
+                        <div style="font-size:0.9rem; color:var(--text-sub);">학생 질문 등록 및 선생님 맞춤형 피드백 시스템</div>
+                    </div>
+                </div>
+                <button class="btn-tool" onclick="closeQNA()">✕</button>
+            </div>
+
+            <!-- Q&A Tabs -->
+            <div class="qna-tabs">
+                <button class="qna-tab-btn active" data-tab="current" onclick="setQnaTab('current')">📌 현재 슬라이드 질문</button>
+                <button class="qna-tab-btn" data-tab="all" onclick="setQnaTab('all')">📚 06차시 전체 질문</button>
+                <button class="qna-tab-btn" data-tab="form" onclick="setQnaTab('form')">✍️ 새 질문 작성하기</button>
+            </div>
+
+            <!-- Q&A Body -->
+            <div class="qna-body">
+                <!-- Teacher Admin Panel (Visible only in teacher mode) -->
+                <div class="teacher-panel" id="qnaTeacherPanel" style="display:none;">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <span style="font-size:1.2rem;">👨‍🏫</span>
+                        <strong style="color:var(--accent-rose);">교사 관리자 모드 동작 중</strong>
+                        <span style="font-size:0.85rem; color:var(--text-sub);">(학생 질문에 바로 답변을 작성하세요)</span>
+                    </div>
+                    <div style="display:flex; gap:8px;">
+                        <a href="qna_dashboard.html" class="btn-tool" style="text-decoration:none;" title="전체 1~8차시 통합 관리함">📋 통합 대시보드</a>
+                        <button class="btn-tool" onclick="exportQnaJSON()">📥 백업(JSON)</button>
+                        <label class="btn-tool" style="cursor:pointer;">
+                            📤 복원 <input type="file" accept=".json" style="display:none;" onchange="importQnaJSON(event)">
+                        </label>
+                        <button class="btn-tool" style="color:var(--accent-rose);" onclick="clearAllQna()">🗑️ 전체 초기화</button>
+                    </div>
+                </div>
+
+                <!-- Q&A List Area -->
+                <div id="qnaListArea" style="display:flex; flex-direction:column; gap:16px;"></div>
+
+                <!-- Q&A Form Area -->
+                <div id="qnaFormArea" style="display:none; flex-direction:column; gap:16px;">
+                    <div class="qna-form-box">
+                        <div style="display:flex; align-items:center; justify-content:space-between;">
+                            <div style="font-size:1.2rem; font-weight:800; color:var(--accent-purple);">✍️ 수업 내용 질문하기</div>
+                            <span class="qna-slide-badge" id="qnaTargetSlideRef">[현재 슬라이드]</span>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label class="control-label" style="color:var(--text-main);">학번 및 이름</label>
+                            <input type="text" id="qnaStudentName" class="qna-input" placeholder="예: 20301 홍길동 (입력하지 않으면 익명 처리)">
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label" style="color:var(--text-main);">질문 내용 (수식 $...$ 입력 가능)</label>
+                            <textarea id="qnaContent" class="qna-textarea" placeholder="선생님께 궁금한 점이나 이해되지 않는 수식, 풀이 과정을 자유롭게 질문하세요.&#10;예: 포물선 정의 유도할 때 양변을 제곱하는 이유가 궁금합니다. $y^2=4px$"></textarea>
+                        </div>
+
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <div style="font-size:0.85rem; color:var(--text-sub);">
+                                💡 LaTeX 수식 기호 <code>$x^2+y^2=1$</code>를 사용하면 수학 기호로 예쁘게 표현됩니다.
+                            </div>
+                            <button class="btn-submit-qna" onclick="submitStudentQuestion()">🚀 질문 등록하기</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    const indicator = document.getElementById('slideIndicator');
+    const progressBar = document.getElementById('progressBar');
+    const tocList = document.getElementById('tocList');
+    
+    // Q&A System State
+    const QNA_STORAGE_KEY = 'GEOMETRY_QNA_DATA_v1';
+    const TEACHER_PIN = '1234';
+    let isTeacherMode = localStorage.getItem('GEOMETRY_TEACHER_MODE') === 'true';
+    let currentQnaFilter = 'current'; // 'current', 'all', 'form'
+    
+    // Get current lesson number from URL / title
+    const pageLessonNum = document.querySelector('.nav-title') ? document.querySelector('.nav-title').innerText.slice(0, 2) : '01';
+
+    // BroadcastChannel for live tab sync
+    const qnaChannel = window.BroadcastChannel ? new BroadcastChannel('geometry_qna_channel') : null;
+    if (qnaChannel) {
+        qnaChannel.onmessage = (e) => {
+            updateQnaBadge();
+            if (document.getElementById('qnaModal').classList.contains('show')) {
+                renderQnaList();
+            }
+        };
+    }
+
+    window.addEventListener('storage', (e) => {
+        if (e.key === QNA_STORAGE_KEY) {
+            updateQnaBadge();
+            if (document.getElementById('qnaModal').classList.contains('show')) {
+                renderQnaList();
+            }
+        }
+    });
+
+    function updateSlide() {
+        slides.forEach((s, idx) => {
+            if (idx === currentSlide) {
+                s.classList.add('active');
+                if (s.dataset.simInit && typeof window[s.dataset.simInit] === 'function') {
+                    setTimeout(window[s.dataset.simInit], 50);
+                }
+            } else {
+                s.classList.remove('active');
+            }
+        });
+        
+        if (indicator) indicator.textContent = `${currentSlide + 1} / ${totalSlides}`;
+        if (progressBar) progressBar.style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+        
+        updateQnaBadge();
+        
+        // Re-render KaTeX if new elements are visible
+        if (window.renderMathInElement) {
+            renderMathInElement(slides[currentSlide], {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false}
+                ],
+                throwOnError: false
+            });
+        }
+    }
+
+    function nextSlide() {
+        if (currentSlide < totalSlides - 1) {
+            currentSlide++;
+            updateSlide();
+        }
+    }
+
+    function prevSlide() {
+        if (currentSlide > 0) {
+            currentSlide--;
+            updateSlide();
+        }
+    }
+
+    function goToSlide(idx) {
+        if (idx >= 0 && idx < totalSlides) {
+            currentSlide = idx;
+            updateSlide();
+            closeTOC();
+        }
+    }
+
+    function toggleSolution(btn) {
+        const content = btn.nextElementSibling;
+        if (content) {
+            content.classList.toggle('show');
+            btn.textContent = content.classList.contains('show') ? '🔒 풀이 접기' : '💡 풀이 보기';
+        }
+    }
+
+    function toggleAllSolutions() {
+        const solutions = document.querySelectorAll('.solution-content');
+        const blanks = document.querySelectorAll('.proof-blank');
+        const anyHidden = Array.from(solutions).some(s => !s.classList.contains('show')) ||
+                          Array.from(blanks).some(b => !b.classList.contains('revealed'));
+        
+        solutions.forEach(s => {
+            if (anyHidden) s.classList.add('show');
+            else s.classList.remove('show');
+            const btn = s.previousElementSibling;
+            if (btn && btn.classList.contains('btn-toggle-sol')) {
+                btn.textContent = anyHidden ? '🔒 풀이 접기' : '💡 풀이 보기';
+            }
+        });
+
+        blanks.forEach(b => {
+            if (anyHidden) b.classList.add('revealed');
+            else b.classList.remove('revealed');
+        });
+    }
+
+    function revealAllBlanks(btn) {
+        const container = btn.closest('.proof-box') || document;
+        const blanks = container.querySelectorAll('.proof-blank');
+        const anyHidden = Array.from(blanks).some(b => !b.classList.contains('revealed'));
+        blanks.forEach(b => {
+            if (anyHidden) b.classList.add('revealed');
+            else b.classList.remove('revealed');
+        });
+        btn.textContent = anyHidden ? '🔒 빈칸 다시 가리기' : '🔓 빈칸 전체 확인';
+    }
+
+    function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(() => {});
+        } else {
+            if (document.exitFullscreen) document.exitFullscreen();
+        }
+    }
+
+    function cycleTheme() {
+        const body = document.body;
+        const currentTheme = body.getAttribute('data-theme') || 'dark';
+        let nextTheme = 'dark';
+        if (currentTheme === 'dark') nextTheme = 'chalkboard';
+        else if (currentTheme === 'chalkboard') nextTheme = 'light';
+        else nextTheme = 'dark';
+        
+        body.setAttribute('data-theme', nextTheme);
+        const themeBtn = document.getElementById('btnTheme');
+        if (themeBtn) {
+            if (nextTheme === 'chalkboard') themeBtn.textContent = '🟩 칠판모드';
+            else if (nextTheme === 'light') themeBtn.textContent = '☀️ 라이트';
+            else themeBtn.textContent = '🌙 다크';
+        }
+    }
+
+    function openTOC() {
+        const modal = document.getElementById('tocModal');
+        if (modal) modal.classList.add('show');
+    }
+
+    function closeTOC() {
+        const modal = document.getElementById('tocModal');
+        if (modal) modal.classList.remove('show');
+    }
+
+    function initTOC() {
+        if (!tocList) return;
+        tocList.innerHTML = '';
+        slides.forEach((slide, idx) => {
+            const titleElem = slide.querySelector('.slide-title');
+            const title = titleElem ? titleElem.innerText.replace(/^[^\w가-힣]+/, '').trim() : `Slide ${idx + 1}`;
+            const item = document.createElement('div');
+            item.className = 'toc-item';
+            item.innerHTML = `<span><strong>${idx + 1}.</strong> ${title}</span> <span style="color:var(--text-sub); font-size:0.9rem;">이동 →</span>`;
+            item.onclick = () => goToSlide(idx);
+            tocList.appendChild(item);
+        });
+    }
+
+    /* ========== Q&A Engine Logic ========== */
+    function getQnaData() {
+        try {
+            return JSON.parse(localStorage.getItem(QNA_STORAGE_KEY)) || [];
+        } catch (e) {
+            return [];
+        }
+    }
+
+    function saveQnaData(data) {
+        localStorage.setItem(QNA_STORAGE_KEY, JSON.stringify(data));
+        if (qnaChannel) qnaChannel.postMessage({ type: 'UPDATE' });
+        updateQnaBadge();
+    }
+
+    function updateQnaBadge() {
+        const badge = document.getElementById('qnaCountBadge');
+        if (!badge) return;
+        const allData = getQnaData();
+        const currentSlideTitle = getCurrentSlideTitle();
+        const currentSlideQuestions = allData.filter(q => q.lesson === pageLessonNum && q.slideIndex === currentSlide);
+        badge.textContent = currentSlideQuestions.length;
+    }
+
+    function getCurrentSlideTitle() {
+        const slide = slides[currentSlide];
+        if (!slide) return `Slide ${currentSlide + 1}`;
+        const titleElem = slide.querySelector('.slide-title');
+        return titleElem ? titleElem.innerText.replace(/^[^\w가-힣]+/, '').trim() : `Slide ${currentSlide + 1}`;
+    }
+
+    function openQNA(tab = 'current') {
+        currentQnaFilter = tab;
+        const modal = document.getElementById('qnaModal');
+        if (modal) {
+            modal.classList.add('show');
+            setQnaTab(tab);
+        }
+    }
+
+    function closeQNA() {
+        const modal = document.getElementById('qnaModal');
+        if (modal) modal.classList.remove('show');
+    }
+
+    function setQnaTab(tab) {
+        currentQnaFilter = tab;
+        document.querySelectorAll('.qna-tab-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.tab === tab);
+        });
+
+        const listArea = document.getElementById('qnaListArea');
+        const formArea = document.getElementById('qnaFormArea');
+        
+        if (tab === 'form') {
+            if (listArea) listArea.style.display = 'none';
+            if (formArea) {
+                formArea.style.display = 'flex';
+                const slideRefElem = document.getElementById('qnaTargetSlideRef');
+                if (slideRefElem) {
+                    slideRefElem.textContent = `[${pageLessonNum}차시 #${currentSlide + 1}] ${getCurrentSlideTitle()}`;
+                }
+            }
+        } else {
+            if (formArea) formArea.style.display = 'none';
+            if (listArea) {
+                listArea.style.display = 'flex';
+                renderQnaList();
+            }
+        }
+    }
+
+    function renderQnaList() {
+        const listArea = document.getElementById('qnaListArea');
+        if (!listArea) return;
+        
+        const allData = getQnaData();
+        let filtered = [];
+        if (currentQnaFilter === 'current') {
+            filtered = allData.filter(q => q.lesson === pageLessonNum && q.slideIndex === currentSlide);
+        } else {
+            filtered = allData.filter(q => q.lesson === pageLessonNum);
+        }
+
+        const teacherPanel = document.getElementById('qnaTeacherPanel');
+        if (teacherPanel) {
+            teacherPanel.style.display = isTeacherMode ? 'flex' : 'none';
+        }
+
+        if (filtered.length === 0) {
+            listArea.innerHTML = `
+                <div style="text-align:center; padding:50px 20px; color:var(--text-sub);">
+                    <div style="font-size:3rem; margin-bottom:12px;">💬</div>
+                    <div style="font-size:1.25rem; font-weight:700; margin-bottom:8px;">등록된 질문이 없습니다.</div>
+                    <p style="font-size:1rem; margin-bottom:20px;">공부하다가 이해가 안 되거나 궁금한 점을 언제든 질문해보세요!</p>
+                    <button class="btn-submit-qna" onclick="setQnaTab('form')">✍️ 이 슬라이드에 첫 질문 작성하기</button>
+                </div>
+            `;
+            return;
+        }
+
+        listArea.innerHTML = filtered.map(item => `
+            <div class="qna-card" id="qna-item-${item.id}">
+                <div class="qna-card-top">
+                    <div class="qna-student-badge">
+                        <span>👤 ${item.studentName || '익명 학생'}</span>
+                        <span style="font-size:0.85rem; color:var(--text-sub); font-weight:normal;">• ${item.createdAt}</span>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <span class="qna-slide-badge">#${item.slideIndex + 1} 슬라이드</span>
+                        ${item.isAnswered ? '<span style="color:var(--accent-emerald); font-weight:800; font-size:0.85rem;">✅ 답변완료</span>' : '<span class="qna-pending-badge">⏳ 답변대기</span>'}
+                        ${isTeacherMode ? `<button class="btn-tool" style="color:var(--accent-rose); padding:2px 8px; font-size:0.8rem;" onclick="deleteQna('${item.id}')">🗑️ 삭제</button>` : ''}
+                    </div>
+                </div>
+                
+                <div class="qna-question-text">
+                    ${item.question}
+                </div>
+
+                ${item.isAnswered ? `
+                    <div class="qna-answer-box">
+                        <div class="qna-answer-header">
+                            <span>👨‍🏫 선생님 답변</span>
+                            <span style="font-size:0.8rem; color:var(--text-sub); font-weight:normal;">(${item.answeredAt})</span>
+                        </div>
+                        <div style="color:var(--text-main);">${item.answer}</div>
+                    </div>
+                ` : ''}
+
+                ${isTeacherMode ? `
+                    <div style="margin-top:8px; border-top:1px dashed var(--border-color); padding-top:12px;">
+                        <div style="font-size:0.95rem; font-weight:700; color:var(--accent-rose); margin-bottom:6px;">✍️ 선생님 답변 작성/수정:</div>
+                        <textarea class="qna-textarea" id="ans-input-${item.id}" style="min-height:80px;" placeholder="학생에게 친절한 풀이와 설명을 입력하세요 (KaTeX 수식 $...$ 지원)">${item.answer || ''}</textarea>
+                        <div style="display:flex; justify-content:flex-end; margin-top:8px;">
+                            <button class="btn-tool" style="background:var(--accent-emerald); color:#064e3b; font-weight:800;" onclick="saveAnswer('${item.id}')">💾 답변 저장 및 학생 공개</button>
+                        </div>
+                    </div>
+                ` : ''}
+            </div>
+        `).join('');
+
+        if (window.renderMathInElement) {
+            renderMathInElement(listArea, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false}
+                ],
+                throwOnError: false
+            });
+        }
+    }
+
+    function submitStudentQuestion() {
+        const nameInput = document.getElementById('qnaStudentName');
+        const contentInput = document.getElementById('qnaContent');
+        
+        const name = nameInput.value.trim() || '익명 학생';
+        const question = contentInput.value.trim();
+        
+        if (!question) {
+            alert('질문 내용을 입력해주세요!');
+            return;
+        }
+
+        const now = new Date();
+        const timeStr = `${now.getMonth()+1}/${now.getDate()} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+        const newQna = {
+            id: 'qna-' + Date.now(),
+            lesson: pageLessonNum,
+            slideIndex: currentSlide,
+            slideTitle: getCurrentSlideTitle(),
+            studentName: name,
+            question: question,
+            createdAt: timeStr,
+            answer: '',
+            answeredAt: '',
+            isAnswered: false
+        };
+
+        const allData = getQnaData();
+        allData.unshift(newQna);
+        saveQnaData(allData);
+
+        contentInput.value = '';
+        alert('질문이 성공적으로 등록되었습니다!\n선생님이 확인 후 답변을 작성해주실 예정입니다.');
+        setQnaTab('current');
+    }
+
+    function saveAnswer(id) {
+        const ansInput = document.getElementById(`ans-input-${id}`);
+        if (!ansInput) return;
+        const answer = ansInput.value.trim();
+        if (!answer) {
+            alert('답변 내용을 입력해주세요!');
+            return;
+        }
+
+        const now = new Date();
+        const timeStr = `${now.getMonth()+1}/${now.getDate()} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+        const allData = getQnaData();
+        const item = allData.find(q => q.id === id);
+        if (item) {
+            item.answer = answer;
+            item.answeredAt = timeStr;
+            item.isAnswered = true;
+            saveQnaData(allData);
+            alert('선생님 답변이 등록되었습니다. 학생 화면에 즉시 반영됩니다!');
+            renderQnaList();
+        }
+    }
+
+    function deleteQna(id) {
+        if (!confirm('이 질문을 정말 삭제하시겠습니까?')) return;
+        let allData = getQnaData();
+        allData = allData.filter(q => q.id !== id);
+        saveQnaData(allData);
+        renderQnaList();
+    }
+
+    function toggleTeacherMode() {
+        if (isTeacherMode) {
+            isTeacherMode = false;
+            localStorage.setItem('GEOMETRY_TEACHER_MODE', 'false');
+            updateTeacherModeUI();
+            alert('학생 모드로 전환되었습니다.');
+        } else {
+            const inputPin = prompt('👨‍🏫 교사 전용 인증 PIN 번호를 입력하세요 (기본값: 1234):');
+            if (inputPin === TEACHER_PIN) {
+                isTeacherMode = true;
+                localStorage.setItem('GEOMETRY_TEACHER_MODE', 'true');
+                updateTeacherModeUI();
+                alert('교사 모드가 활성화되었습니다!\n학생들의 모든 질문에 답변을 작성하고 관리할 수 있습니다.');
+            } else if (inputPin !== null) {
+                alert('인증 PIN 번호가 일치하지 않습니다.');
+            }
+        }
+    }
+
+    function updateTeacherModeUI() {
+        const btn = document.getElementById('btnTeacherMode');
+        if (btn) {
+            btn.textContent = isTeacherMode ? '👨‍🏫 교사모드: ON' : '👨‍🏫 교사모드';
+            btn.classList.toggle('active', isTeacherMode);
+        }
+        if (document.getElementById('qnaModal').classList.contains('show')) {
+            renderQnaList();
+        }
+    }
+
+    function exportQnaJSON() {
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(getQnaData(), null, 2));
+        const dlAnchor = document.createElement('a');
+        dlAnchor.setAttribute("href", dataStr);
+        dlAnchor.setAttribute("download", `기하_QnA_데이터백업_${pageLessonNum}차시.json`);
+        dlAnchor.click();
+    }
+
+    function importQnaJSON(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const imported = JSON.parse(e.target.result);
+                if (Array.isArray(imported)) {
+                    saveQnaData(imported);
+                    alert(`총 ${imported.length}개의 Q&A 데이터가 성공적으로 복원되었습니다!`);
+                    renderQnaList();
+                }
+            } catch (err) {
+                alert('유효하지 않은 JSON 파일 형식입니다.');
+            }
+        };
+        reader.readAsText(file);
+    }
+
+    function clearAllQna() {
+        if (!confirm('경고: 저장된 모든 Q&A 데이터를 초기화하시겠습니까?\n(사전에 백업을 권장합니다)')) return;
+        localStorage.removeItem(QNA_STORAGE_KEY);
+        saveQnaData([]);
+        renderQnaList();
+        alert('모든 질문 데이터가 초기화되었습니다.');
+    }
+
+    function renderAllMath() {
+        if (window.renderMathInElement) {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false},
+                    {left: '\\(', right: '\\)', display: false},
+                    {left: '\\[', right: '\\]', display: true}
+                ],
+                ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+                throwOnError: false
+            });
+        }
+    }
+
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') nextSlide();
+        else if (e.key === 'ArrowLeft' || e.key === 'PageUp') prevSlide();
+        else if (e.key === 'f' || e.key === 'F') toggleFullscreen();
+        else if (e.key === 'a' || e.key === 'A' || e.key === 'Enter') toggleAllSolutions();
+        else if (e.key === 't' || e.key === 'T') cycleTheme();
+        else if (e.key === 'm' || e.key === 'M') openTOC();
+        else if (e.key === 'q' || e.key === 'Q') openQNA();
+        else if (e.key === 'Escape') { closeTOC(); closeQNA(); }
+    });
+
+    let touchStartX = 0;
+    document.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; });
+    document.addEventListener('touchend', e => {
+        const diff = touchStartX - e.changedTouches[0].screenX;
+        if (diff > 50) nextSlide();
+        if (diff < -50) prevSlide();
+    });
+
+    // 4-Layer Guaranteed KaTeX Rendering Triggers
+    document.addEventListener('DOMContentLoaded', () => {
+        initTOC();
+        updateSlide();
+        updateTeacherModeUI();
+        renderAllMath();
+    });
+
+    window.addEventListener('load', () => {
+        renderAllMath();
+    });
+
+    // Polling Interval Fallback (Ensures math is rendered even with delayed CDN load)
+    let mathCheckAttempts = 0;
+    const mathCheckTimer = setInterval(() => {
+        mathCheckAttempts++;
+        if (window.renderMathInElement) {
+            renderAllMath();
+            clearInterval(mathCheckTimer);
+        }
+        if (mathCheckAttempts >= 30) clearInterval(mathCheckTimer);
+    }, 100);
+    
+
+    </script>
+</body>
+</html>
